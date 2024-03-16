@@ -5,10 +5,13 @@
 #include "HX711Sensor.h"
 #include "Keg.h"
 #include "background.h"
-#include <SPIFFSutils.h>
+#include "DisplayManager.h"
+
 
 TFT_eSPI lcd = TFT_eSPI();
 TFT_eSprite sprite = TFT_eSprite(&lcd);
+
+DisplayManager displayManager(lcd, sprite);
 
 #define blue 0x0967
 #define black 0x0000
@@ -35,41 +38,24 @@ void setup() {
   button1.init();
   button2.init();
 
-  lcd.init();
-  lcd.fillScreen(TFT_WHITE);
-  lcd.setRotation(3);
-  lcd.setSwapBytes(true);
-  lcd.fillScreen(TFT_GREEN);
+  displayManager.init();
 
-  sprite.createSprite(320, 170);
-  sprite.setSwapBytes(true);
-  sprite.pushImage(0,0,320,170, backgroundGraphic);
+  // lcd.init();
+  // lcd.fillScreen(TFT_WHITE);
+  // lcd.setRotation(3);
+  // lcd.setSwapBytes(true);
+  // lcd.fillScreen(TFT_GREEN);
+
+  // sprite.createSprite(320, 170);
+  // sprite.setSwapBytes(true);
+  // sprite.pushImage(0,0,320,170, backgroundGraphic);
     
-  sprite.setTextDatum(3);
-  sprite.pushSprite(0,0);
+  // sprite.setTextDatum(3);
+  // sprite.pushSprite(0,0);
 
   LoadCell.begin(22.08); // Pass the calibration value here
   
   myKeg.init(); // initialise a keg object
-  
-
-  // if(!SPIFFS.begin(true)){
-  //   Serial.println("An Error has occurred while mounting SPIFFS");
-  //   return;
-  // }
-  
-  // File file = SPIFFS.open("/text.txt", "r");
-
-  // if(!file){
-  //   Serial.println("Failed to open file for reading");
-  //   return;
-  // }
-  
-  // Serial.println("File Content:");
-  // while(file.available()){
-  //   Serial.write(file.read());
-  // }
-  // file.close();
 
 }
 
@@ -109,21 +95,8 @@ void loop() {
   //   myKeg.dispenseBeer(beerMass);
   // }
 
-  sprite.setTextColor(TFT_ORANGE, 0xFF58, true);
-  sprite.drawString(String(myKeg.getPintsRemaining(), 2),20,70,4);
-  sprite.setTextColor(TFT_DARKGREY, 0xFF58, true);
-  sprite.drawString("pints left",20,90,2);
-
-  sprite.setTextColor(TFT_DARKGREY, 0xFF58, true);
-  sprite.drawString(String(measuredBeerMass,1),20,135,2);
-  sprite.drawString(String(myKeg.getCurrentMass(),1),20,150,2);
-
-
-  sprite.setTextColor(TFT_BLACK, 0xFF58, true);
-  sprite.drawString("American Pale", 220, 60, 2);
-  sprite.drawString("IPA 4.5%", 220, 80, 2);
-  sprite.drawString("IBU 32", 220, 100, 2);
-  sprite.drawString("20 Feb 2024", 220, 150, 2);
+  displayManager.updateDisplay(myKeg.getPintsRemaining(), measuredBeerMass, myKeg.getCurrentMass());
+ 
   // if (button1.wasPressed() && button2.wasPressed())
   // {
   //   sprite.setTextColor(TFT_BLACK, 0xFFFF);
