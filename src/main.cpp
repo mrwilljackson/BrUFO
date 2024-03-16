@@ -53,23 +53,23 @@ void setup() {
   myKeg.init(); // initialise a keg object
   
 
-  if(!SPIFFS.begin(true)){
-    Serial.println("An Error has occurred while mounting SPIFFS");
-    return;
-  }
+  // if(!SPIFFS.begin(true)){
+  //   Serial.println("An Error has occurred while mounting SPIFFS");
+  //   return;
+  // }
   
-  File file = SPIFFS.open("/text.txt", "r");
+  // File file = SPIFFS.open("/text.txt", "r");
 
-  if(!file){
-    Serial.println("Failed to open file for reading");
-    return;
-  }
+  // if(!file){
+  //   Serial.println("Failed to open file for reading");
+  //   return;
+  // }
   
-  Serial.println("File Content:");
-  while(file.available()){
-    Serial.write(file.read());
-  }
-  file.close();
+  // Serial.println("File Content:");
+  // while(file.available()){
+  //   Serial.write(file.read());
+  // }
+  // file.close();
 
 }
 
