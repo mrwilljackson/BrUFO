@@ -40,19 +40,6 @@ void setup() {
 
   displayManager.init();
 
-  // lcd.init();
-  // lcd.fillScreen(TFT_WHITE);
-  // lcd.setRotation(3);
-  // lcd.setSwapBytes(true);
-  // lcd.fillScreen(TFT_GREEN);
-
-  // sprite.createSprite(320, 170);
-  // sprite.setSwapBytes(true);
-  // sprite.pushImage(0,0,320,170, backgroundGraphic);
-    
-  // sprite.setTextDatum(3);
-  // sprite.pushSprite(0,0);
-
   LoadCell.begin(22.08); // Pass the calibration value here
   
   myKeg.init(); // initialise a keg object
