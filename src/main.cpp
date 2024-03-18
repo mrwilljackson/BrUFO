@@ -4,7 +4,6 @@
 #include "Pushbutton.h"
 #include "HX711Sensor.h"
 #include "Keg.h"
-#include "background.h"
 #include "DisplayManager.h"
 
 
@@ -96,6 +95,6 @@ void loop() {
 //    sprite.fillSprite(TFT_RED);
 //  }
   
-  sprite.pushSprite(0,0);
+  // sprite.pushSprite(0,0);
   delay(50);
 }

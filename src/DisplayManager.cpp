@@ -1,10 +1,14 @@
 #include "DisplayManager.h"
+#include "background.h"
 
 DisplayManager::DisplayManager(TFT_eSPI& lcd, TFT_eSprite& sprite)
     : lcd(lcd), sprite(sprite) {}
 
 void DisplayManager::init() {
     lcd.init(); // Initialist the display, set up the sprite etc
+    sprite.createSprite(320, 170);
+    sprite.setSwapBytes(true);
+    sprite.pushImage(0, 0, 320, 170, backgroundGraphic);
 }
 
 void DisplayManager::updateDisplay(float remainingPints, float measuredBeerMass, float currentMass) {
