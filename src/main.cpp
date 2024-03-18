@@ -43,7 +43,7 @@ void setup() {
   LoadCell.begin(22.08); // Pass the calibration value here
   
   myKeg.init(); // initialise a keg object
-
+  
 }
 
 void loop() {

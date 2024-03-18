@@ -4,7 +4,7 @@ DisplayManager::DisplayManager(TFT_eSPI& lcd, TFT_eSprite& sprite)
     : lcd(lcd), sprite(sprite) {}
 
 void DisplayManager::init() {
-    // Initialist the display, set up the sprite etc
+    lcd.init(); // Initialist the display, set up the sprite etc
 }
 
 void DisplayManager::updateDisplay(float remainingPints, float measuredBeerMass, float currentMass) {
