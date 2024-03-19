@@ -6,8 +6,13 @@ DisplayManager::DisplayManager(TFT_eSPI& lcd, TFT_eSprite& sprite)
 
 void DisplayManager::init() {
     lcd.init(); // Initialist the display, set up the sprite etc
+    lcd.fillScreen(TFT_WHITE);
+    lcd.setRotation(3);
+    lcd.setSwapBytes(true);
+
     sprite.createSprite(320, 170);
     sprite.setSwapBytes(true);
+    sprite.setTextDatum(3);
     sprite.pushImage(0, 0, 320, 170, backgroundGraphic);
 }
 
