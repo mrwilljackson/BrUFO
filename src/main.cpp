@@ -6,11 +6,11 @@
 #include "Keg.h"
 #include "DisplayManager.h"
 
-#include "BeerDataParser.h"
-#include <SPIFFS.h>
+// #include "BeerDataParser.h"
+// #include <SPIFFS.h>
 
-BeerDataParser beerDataParser;
-BeerData beerData;
+// BeerDataParser beerDataParser;
+// BeerData beerData;
 
 TFT_eSPI lcd = TFT_eSPI();
 TFT_eSprite sprite = TFT_eSprite(&lcd);
@@ -45,29 +45,29 @@ void setup() {
   LoadCell.begin(22.08); // Pass the calibration value here
   myKeg.init(); // initialise a keg object
   
-  // Mount the SPIFFS file system
-  if (!SPIFFS.begin(true)) {
-    Serial.println("Failed to mount SPIFFS");
-    return;
-  }
-  // Read the JSON data from a file
-  File jsonFile = SPIFFS.open("/beer_data.json", "r");
-  if (!jsonFile) {
-    Serial.println("Failed to open beer_data.json");
-    return;
-  }
+  // // Mount the SPIFFS file system
+  // if (!SPIFFS.begin(true)) {
+  //   Serial.println("Failed to mount SPIFFS");
+  //   return;
+  // }
+  // // Read the JSON data from a file
+  // File jsonFile = SPIFFS.open("/beer_data.json", "r");
+  // if (!jsonFile) {
+  //   Serial.println("Failed to open beer_data.json");
+  //   return;
+  // }
 
-  // Parse the JSON data from the file
-  if (beerDataParser.parseBeerData(jsonFile.readString().c_str(), beerData)) {
-    // JSON parsing successful
-    // Update the display with the parsed data
-    displayManager.updateHeader(beerData.beer_name, beerData.beer_type, beerData.bitterness);
-    displayManager.updateFooter(beerData.brew_date);
-  } else {
-    Serial.println("Failed to parse beer data");
-  }
+  // // Parse the JSON data from the file
+  // if (beerDataParser.parseBeerData(jsonFile.readString().c_str(), beerData)) {
+  //   // JSON parsing successful
+  //   // Update the display with the parsed data
+  //   displayManager.updateHeader(beerData.beer_name, beerData.beer_type, beerData.bitterness);
+  //   displayManager.updateFooter(beerData.brew_date);
+  // } else {
+  //   Serial.println("Failed to parse beer data");
+  // }
 
-  jsonFile.close();
+  // jsonFile.close();
 
 }
 
