@@ -5,12 +5,7 @@
 #include "HX711Sensor.h"
 #include "Keg.h"
 #include "DisplayManager.h"
-
-// #include "BeerDataParser.h"
-// #include <SPIFFS.h>
-
-// BeerDataParser beerDataParser;
-// BeerData beerData;
+#include "BeerData.h"
 
 TFT_eSPI lcd = TFT_eSPI();
 TFT_eSprite sprite = TFT_eSprite(&lcd);
@@ -45,35 +40,25 @@ void setup() {
   LoadCell.begin(22.08); // Pass the calibration value here
   myKeg.init(); // initialise a keg object
   
-  // // Mount the SPIFFS file system
-  // if (!SPIFFS.begin(true)) {
-  //   Serial.println("Failed to mount SPIFFS");
-  //   return;
-  // }
-  // // Read the JSON data from a file
-  // File jsonFile = SPIFFS.open("/beer_data.json", "r");
-  // if (!jsonFile) {
-  //   Serial.println("Failed to open beer_data.json");
-  //   return;
-  // }
+  BeerData beerData;
+  // temporary json added for testing
+  char json[] = "{\"beer_name\":\"American Pale Ale\",\"beer_type\":\"IPA\",\"bitterness\":32,\"brew_date\":\"2024-02-20\"}";
 
-  // // Parse the JSON data from the file
-  // if (beerDataParser.parseBeerData(jsonFile.readString().c_str(), beerData)) {
-  //   // JSON parsing successful
-  //   // Update the display with the parsed data
-  //   displayManager.updateHeader(beerData.beer_name, beerData.beer_type, beerData.bitterness);
-  //   displayManager.updateFooter(beerData.brew_date);
-  // } else {
-  //   Serial.println("Failed to parse beer data");
-  // }
-
-  // jsonFile.close();
+  if (beerData.parseJson(json)) {
+    Serial.println("JSON Parse Successful");
+    Serial.println("Beer Name: " + beerData.beerName);
+    Serial.println("Beer Type: " + beerData.beerType);
+    Serial.println("Bitterness: " + String(beerData.bitterness));
+    Serial.println("Brew Date: " + beerData.brewDate);
+  } else {
+    Serial.println("Failed to parse JSON");
+  }
 
 }
 
 void loop() {
 //   // put your main code here, to run repeatedly:
-  Serial.println("loop");
+  //Serial.println("loop");
 
   if (LoadCell.update()) { // if there is new data update the beerMass value
     measuredBeerMass = LoadCell.read();
@@ -109,18 +94,6 @@ void loop() {
 
   displayManager.updateDisplay(myKeg.getPintsRemaining(), measuredBeerMass, myKeg.getCurrentMass());
  
-  // if (button1.wasPressed() && button2.wasPressed())
-  // {
-  //   sprite.setTextColor(TFT_BLACK, 0xFFFF);
-  //   sprite.fillSprite(TFT_GREEN);
-  //   sprite.drawString("tare",10,85,4);
-  //   LoadCell.tare();
-  // }
 
-//  if (!button1.readState()) {
-//    sprite.fillSprite(TFT_RED);
-//  }
-  
-  // sprite.pushSprite(0,0);
   delay(50);
 }
