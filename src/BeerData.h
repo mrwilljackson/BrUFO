@@ -8,6 +8,7 @@ class BeerData {
 public:
   String beerName;
   String beerType;
+  float beerAbv;
   int bitterness;
   String brewDate;
   

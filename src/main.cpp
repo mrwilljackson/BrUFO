@@ -6,6 +6,9 @@
 #include "Keg.h"
 #include "DisplayManager.h"
 #include "BeerData.h"
+#include <SPIFFS.h>
+#include <FS.h>
+
 
 TFT_eSPI lcd = TFT_eSPI();
 TFT_eSprite sprite = TFT_eSprite(&lcd);
@@ -29,6 +32,32 @@ float measuredBeerMass; // beer mass reading
 
 Keg myKeg(1, 0, 19000);
 
+String readJsonFromFile(const char* filename) {
+    String jsonData;
+
+   if (!SPIFFS.exists(filename)) {
+        Serial.println("File not found: " + String(filename));
+        return jsonData;
+    }
+
+    fs::File file = SPIFFS.open(filename, "r");
+    if (!file) {
+        Serial.println("Failed to open file: " + String(filename));
+        return jsonData;
+    }
+
+    while (file.available()) {
+        jsonData += file.readString();
+    }
+
+    file.close();
+    return jsonData;
+
+//String readJsonFromFile() {
+ // temporary json added for testing
+  // return "{\"beer_name\":\"Banana\",\"beer_type\":\"Chumbooka\",\"bitterness\":2,\"beer_abv\":\"99\", \"brew_date\":\"2024-02-20\"}";
+}
+
 void setup() {
   Serial.begin(57600); 
   delay(10);
@@ -40,14 +69,21 @@ void setup() {
   LoadCell.begin(22.08); // Pass the calibration value here
   myKeg.init(); // initialise a keg object
   
-  BeerData beerData;
-  // temporary json added for testing
-  char json[] = "{\"beer_name\":\"American Pale Ale\",\"beer_type\":\"IPA\",\"bitterness\":32,\"brew_date\":\"2024-02-20\"}";
+    if (!SPIFFS.begin(true)) {
+        Serial.println("Failed to mount SPIFFS");
+        return;
+    }
 
-  if (beerData.parseJson(json)) {
+
+  BeerData beerData;
+  String jsonData = readJsonFromFile("/beer_data.json");
+
+  // if (beerData.parseJson(readJsonFromFile())) {
+  if (beerData.parseJson(jsonData)) {
     Serial.println("JSON Parse Successful");
     Serial.println("Beer Name: " + beerData.beerName);
     Serial.println("Beer Type: " + beerData.beerType);
+    Serial.println("ABV: " + String(beerData.beerAbv, 1));
     Serial.println("Bitterness: " + String(beerData.bitterness));
     Serial.println("Brew Date: " + beerData.brewDate);
   } else {
