@@ -30,6 +30,7 @@ float measuredBeerMass; // beer mass reading
 
 Keg myKeg(1, 0, 19000);
 
+BeerDataManager beerDataManager;
 BeerData beerData;
 
 void setup() {
@@ -48,7 +49,7 @@ void setup() {
       return;
   }
 
-  BeerDataManager beerDataManager;
+  
   if (beerDataManager.loadAndParse("/beer_data.json")) {
       beerData = beerDataManager.getBeerData();
       // Now you can use beerData with your DisplayManager

@@ -8,15 +8,15 @@
 #include <SPIFFS.h> // For ESP32, include SPIFFS.h
 #endif
 
-class BeerData {
-public:
-    String beerName;
-    String beerType;
-    int bitterness;
-    String brewDate;
+// class BeerData {
+// public:
+//     String beerName;
+//     String beerType;
+//     int bitterness;
+//     String brewDate;
 
-    // Constructor, Copy Constructor, and other necessary member functions
-};
+//     // Constructor, Copy Constructor, and other necessary member functions
+// };
 
 class BeerDataManager {
 public:
