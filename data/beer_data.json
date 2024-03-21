@@ -1,6 +1,7 @@
 {
-    "beer_name": "American Pale Ale",
-    "beer_type": "IPA",
-    "bitterness": 32,
+    "beer_name": "unga bunga",
+    "beer_type": "Juice",
+    "beer_abv": 10.5,
+    "bitterness": 100,
     "brew_date": "2024-02-20"
 }

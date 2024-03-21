@@ -12,6 +12,7 @@ bool BeerData::parseJson(String json) {
 
   beerName = doc["beer_name"].as<String>();
   beerType = doc["beer_type"].as<String>();
+  beerAbv = doc["beer_abv"].as<float>();
   bitterness = doc["bitterness"].as<int>();
   brewDate = doc["brew_date"].as<String>();
 
