@@ -5,7 +5,8 @@
 #include "HX711Sensor.h"
 #include "Keg.h"
 #include "DisplayManager.h"
-#include "BeerData.h"
+#include "BeerDataManager.h"
+
 
 TFT_eSPI lcd = TFT_eSPI();
 TFT_eSprite sprite = TFT_eSprite(&lcd);
@@ -29,6 +30,8 @@ float measuredBeerMass; // beer mass reading
 
 Keg myKeg(1, 0, 19000);
 
+BeerData beerData;
+
 void setup() {
   Serial.begin(57600); 
   delay(10);
@@ -40,25 +43,26 @@ void setup() {
   LoadCell.begin(22.08); // Pass the calibration value here
   myKeg.init(); // initialise a keg object
   
-  BeerData beerData;
-  // temporary json added for testing
-  char json[] = "{\"beer_name\":\"American Pale Ale\",\"beer_type\":\"IPA\",\"bitterness\":32,\"brew_date\":\"2024-02-20\"}";
-
-  if (beerData.parseJson(json)) {
-    Serial.println("JSON Parse Successful");
-    Serial.println("Beer Name: " + beerData.beerName);
-    Serial.println("Beer Type: " + beerData.beerType);
-    Serial.println("Bitterness: " + String(beerData.bitterness));
-    Serial.println("Brew Date: " + beerData.brewDate);
-  } else {
-    Serial.println("Failed to parse JSON");
+  if (!SPIFFS.begin()) {
+      Serial.println("An Error has occurred while mounting SPIFFS");
+      return;
   }
 
+  BeerDataManager beerDataManager;
+  if (beerDataManager.loadAndParse("/beer_data.json")) {
+      beerData = beerDataManager.getBeerData();
+      // Now you can use beerData with your DisplayManager
+      Serial.println("Beer Name: " + beerData.beerName);
+      // Add more display logic here
+  } else {
+      Serial.println("Failed to load or parse beer data");
+  }
+  Serial.println("setup complete");
 }
 
 void loop() {
 //   // put your main code here, to run repeatedly:
-  //Serial.println("loop");
+  // Serial.println("loop");
 
   if (LoadCell.update()) { // if there is new data update the beerMass value
     measuredBeerMass = LoadCell.read();
@@ -92,8 +96,20 @@ void loop() {
   //   myKeg.dispenseBeer(beerMass);
   // }
 
-  displayManager.updateDisplay(myKeg.getPintsRemaining(), measuredBeerMass, myKeg.getCurrentMass());
+  displayManager.updateDisplay(beerData, myKeg.getPintsRemaining(), measuredBeerMass, myKeg.getCurrentMass());
  
+  // if (button1.wasPressed() && button2.wasPressed())
+  // {
+  //   sprite.setTextColor(TFT_BLACK, 0xFFFF);
+  //   sprite.fillSprite(TFT_GREEN);
+  //   sprite.drawString("tare",10,85,4);
+  //   LoadCell.tare();
+  // }
 
+//  if (!button1.readState()) {
+//    sprite.fillSprite(TFT_RED);
+//  }
+  
+  // sprite.pushSprite(0,0);
   delay(50);
 }

@@ -16,7 +16,7 @@ void DisplayManager::init() {
     sprite.pushImage(0, 0, 320, 170, backgroundGraphic);
 }
 
-void DisplayManager::updateDisplay(float remainingPints, float measuredBeerMass, float currentMass) {
+void DisplayManager::updateDisplay(BeerData& beerData, float remainingPints, float measuredBeerMass, float currentMass) {
     sprite.setTextColor(TFT_ORANGE, 0xFF58, true);
     sprite.drawString(String(remainingPints, 2), 20, 70, 4);
     sprite.setTextColor(TFT_DARKGREY, 0xFF58, true);
@@ -24,20 +24,20 @@ void DisplayManager::updateDisplay(float remainingPints, float measuredBeerMass,
     sprite.drawString(String(measuredBeerMass, 1), 20, 135, 2);
     sprite.drawString(String(currentMass, 1), 20, 150, 2);
 
-    drawHeader();
-    drawFooter();
+    drawHeader(beerData);
+    drawFooter(beerData);
 
     sprite.pushSprite(0, 0);
 }
 
-void DisplayManager::drawHeader() {
+void DisplayManager::drawHeader(BeerData& beerData) {
     sprite.setTextColor(TFT_BLACK, 0xFF58, true);
     sprite.drawString("American Pale", 220, 60, 2);
     sprite.drawString("IPA 4.5%", 220, 80, 2);
     sprite.drawString("IBU 32", 220, 100, 2);
 }
 
-void DisplayManager::drawFooter() {
+void DisplayManager::drawFooter(BeerData& beerData) {
     sprite.setTextColor(TFT_BLACK, 0xFF58, true);
     sprite.drawString("20 Feb 2024", 220, 150, 2);
 }
